@@ -31,6 +31,7 @@ def move(request):
     player = request.user.player
     player_id = player.id
     player_uuid = player.uuid
+    print(request.body, "<<<< request.body <<<<<<<<<")
     data = json.loads(request.body)
     direction = data['direction']
     room = player.room()
