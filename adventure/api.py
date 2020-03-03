@@ -4,8 +4,9 @@ from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 from decouple import config
 from django.contrib.auth.models import User
-from .models import *
+from .models import Room, Player
 from rest_framework.decorators import api_view
+from .serializers import RoomSerializer, PlayerSerializer
 import json
 
 # instantiate pusher
@@ -65,3 +66,10 @@ def move(request):
 def say(request):
     # IMPLEMENT
     return JsonResponse({'error':"Not yet implemented"}, safe=True, status=500)
+
+@csrf_exempt
+@api_view(["GET"])
+def rooms(request):
+    rooms_list = Room.objects.all()
+    serializer = RoomSerializer(rooms_list, many=True)
+    return JsonResponse({"books": serializer.data}, safe=False, status=200)
