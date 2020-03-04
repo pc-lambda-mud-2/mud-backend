@@ -72,11 +72,6 @@ class World(models.Model):
     width = 0
     height = 0
 
-    # def generate_rooms(self, num_rooms):
-    #     for i in range(num_rooms):
-    #         room = Room()
-    #         room.save()
-
     def roomreader(self, rooms=[]):
         with open('rooms.csv', newline='') as csvfile:
             roomfile = csv.reader(csvfile, quotechar='|')
