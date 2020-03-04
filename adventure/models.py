@@ -72,16 +72,47 @@ class World(models.Model):
     width = 0
     height = 0
 
+    # method to generate rooms
+    def writerooms(self, rooms=[]):
+        # open the adjectives file. Will be used to create the rooms.
+        with open('adjectives.txt', 'r') as f:
+            # we read teh file separating each line
+            adjectives = f.read().splitlines()
+            # we loop through the lines
+            for line in adjectives:
+                # we append each line to rooms List adding 'room
+                rooms.append(f'{line} room')
+        
+        # we open the room file, that will be used as a table to save info to database
+        with open('rooms.csv', 'w', newline='') as csvfile:
+            # we need to write in it, separating each column with comma
+            testwriter = csv.writer(csvfile, delimiter=',')
+            # we loop 100 times (lenght of rooms List)
+            for i in range(len(rooms)):
+                # first line is the title: name of the room and description
+                if i == 0:
+                    # we write name and description title
+                    testwriter.writerow(['name'] + ['description'])
+                else:
+                    # we write the name and the description of the room, separated by comma
+                    testwriter.writerow([rooms[i]] + [f'It is a very {rooms[i]}'])
+
+    # method to read the rooms csv file and save to a List which we will iterate to save to the database
     def roomreader(self, rooms=[]):
+        # open the file
         with open('rooms.csv', newline='') as csvfile:
-            roomfile = csv.reader(csvfile, quotechar='|')
+            # we read it
+            roomfile = csv.reader(csvfile, quotechar='|', quoting=csv.QUOTE_MINIMAL)
+            # we set line count so we can skip the first line (titles)
             line_count = 0
+            # we iterate over the rows of the file
             for row in roomfile:
+                # we skip first line - title
                 if line_count == 0:
                     line_count += 1
                 else:
+                    # we create a Room with the info of each row
                     rooms.append(Room(title=row[0], description=row[1]))
         return rooms
-
 
 
