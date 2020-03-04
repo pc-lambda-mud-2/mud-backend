@@ -72,4 +72,4 @@ def say(request):
 def rooms(request):
     rooms_list = Room.objects.all()
     serializer = RoomSerializer(rooms_list, many=True)
-    return JsonResponse({"books": serializer.data}, safe=False, status=200)
+    return JsonResponse({"rooms": serializer.data}, safe=False, status=200)

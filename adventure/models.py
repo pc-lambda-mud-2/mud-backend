@@ -4,6 +4,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 import uuid
+import csv
 
 class Room(models.Model):
     title = models.CharField(max_length=50, default="DEFAULT TITLE")
@@ -66,7 +67,26 @@ def create_user_player(sender, instance, created, **kwargs):
 def save_user_player(sender, instance, **kwargs):
     instance.player.save()
 
+class World(models.Model):
+    grid = None
+    width = 0
+    height = 0
 
+    # def generate_rooms(self, num_rooms):
+    #     for i in range(num_rooms):
+    #         room = Room()
+    #         room.save()
+
+    def roomreader(self, rooms=[]):
+        with open('rooms.csv', newline='') as csvfile:
+            roomfile = csv.reader(csvfile, quotechar='|')
+            line_count = 0
+            for row in roomfile:
+                if line_count == 0:
+                    line_count += 1
+                else:
+                    rooms.append(Room(title=row[0], description=row[1]))
+        return rooms
 
 
 
