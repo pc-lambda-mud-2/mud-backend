@@ -13,6 +13,11 @@ room_array = w.roomreader(rooms)
 for el in room_array:
   el.save()
 
+players=Player.objects.all()
+for p in players:
+  p.currentRoom=room_array[0].id
+  p.save()
+
 # FIRST CODE
 
 # r_outside = Room(title="Outside Cave Entrance",
@@ -51,8 +56,5 @@ for el in room_array:
 # r_narrow.connectRooms(r_treasure, "n")
 # r_treasure.connectRooms(r_narrow, "s")
 
-players=Player.objects.all()
-for p in players:
-  p.currentRoom=r_outside.id
-  p.save()
+
 
