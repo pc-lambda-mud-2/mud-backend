@@ -1,22 +1,35 @@
 from django.contrib.auth.models import User
 from adventure.models import Player, Room, World
+from util.binary_search_tree import BinarySearchTree
 
 # SECOND CODE
 
-Room.objects.all().delete()
+# Room.objects.all().delete()
 
 w = World()
 
 rooms = []
+directions = ['n', 's', 'e', 'w']
 
-room_array = w.roomreader(rooms)
-for el in room_array:
-  el.save()
+# room_array = w.roomreader(rooms)
+# for el in room_array:
+#   el.save()
 
-players=Player.objects.all()
-for p in players:
-  p.currentRoom=room_array[0].id
-  p.save()
+# players=Player.objects.all()
+# for p in players:
+#   p.currentRoom=room_array[0].id
+#   p.save()
+
+rooms_in_db = Room.objects.all()
+print(rooms_in_db[0].id, '<<<<<<<<<<<<< Room ID?')
+rooms_BST = BinarySearchTree(rooms_in_db[0].id)
+
+# room_BST = DoublyLinkedList
+for room in rooms_in_db:
+  rooms_BST.insert(room.id)
+
+print(rooms_BST.get_max())
+print(rooms_BST.right)
 
 # FIRST CODE
 
