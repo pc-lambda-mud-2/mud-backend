@@ -160,7 +160,7 @@ class World(models.Model):
         for index, room in enumerate(grid):
             to_the_north = index - self.width
             to_the_east = index + 1
-            to_the_south = index + 5
+            to_the_south = index + self.width
             to_the_west = index - 1
 
             print(room.title, room.x, room.y, "<<<<<<")
