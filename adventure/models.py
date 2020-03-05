@@ -107,7 +107,7 @@ class World(models.Model):
     def roomreader(self, rooms=[]):
         x = 0
         x_max = self.width
-        y = self.height
+        y = self.height -1
         room_id = 1
         # open the file
         with open('rooms.csv', newline='') as csvfile:
@@ -166,45 +166,87 @@ class World(models.Model):
             print(room.title, room.x, room.y, "<<<<<<")
 
 
-        # if first row,
-            if room.y == 5 and room.x == 0: # first row first column
-                random_index = random.randrange(0, len(directions["first_row_and_first_column"]))
-                direction_to_be_set = directions["first_row_and_first_column"][random_index]
-                # e_to
-                if direction_to_be_set == 'e':
-                    room.connectRooms(grid[to_the_east], direction_to_be_set)
-                    grid[to_the_east].connectRooms(room, opposites[direction_to_be_set])
-                # s_to
-                else:
-                    room.connectRooms(grid[to_the_south], direction_to_be_set)
-                    grid[to_the_south].connectRooms(room, opposites[direction_to_be_set])
+            # if first row,
+            if room.y == 5:
+                if room.x == 0: # first row first column
+                    random_index = random.randrange(0, len(directions["first_row_and_first_column"]))
+                    direction_to_be_set = directions["first_row_and_first_column"][random_index]
+                    # e_to
+                    if direction_to_be_set == 'e':
+                        room.connectRooms(grid[to_the_east], direction_to_be_set)
+                        grid[to_the_east].connectRooms(room, opposites[direction_to_be_set])
+                    # s_to
+                    else:
+                        room.connectRooms(grid[to_the_south], direction_to_be_set)
+                        grid[to_the_south].connectRooms(room, opposites[direction_to_be_set])
 
-            elif room.y == 5 and room.x == 5:
-                random_index = random.randrange(0, len(directions["first_row_and_last_column"]))
-                direction_to_be_set = directions["first_row_and_last_column"][random_index]
-                # w_to
-                if direction_to_be_set == 'w':
-                    room.connectRooms(grid[to_the_west], direction_to_be_set)
-                    grid[to_the_west].connectRooms(room, opposites[direction_to_be_set])
-                # s_to
+                elif room.x == 5:
+                    random_index = random.randrange(0, len(directions["first_row_and_last_column"]))
+                    direction_to_be_set = directions["first_row_and_last_column"][random_index]
+                    # w_to
+                    if direction_to_be_set == 'w':
+                        room.connectRooms(grid[to_the_west], direction_to_be_set)
+                        grid[to_the_west].connectRooms(room, opposites[direction_to_be_set])
+                    # s_to
+                    else:
+                        room.connectRooms(grid[to_the_south], direction_to_be_set)
+                        grid[to_the_south].connectRooms(room, opposites[direction_to_be_set])
                 else:
-                    room.connectRooms(grid[to_the_south], direction_to_be_set)
-                    grid[to_the_south].connectRooms(room, opposites[direction_to_be_set])
-            elif room.y == 5:
-                random_index = random.randrange(0, len(directions["first_row"]))
-                direction_to_be_set = directions["first_row"][random_index]
-                # w_to
-                if direction_to_be_set == 'w':
-                    room.connectRooms(grid[to_the_west], direction_to_be_set)
-                    grid[to_the_west].connectRooms(room, opposites[direction_to_be_set])
-                # e_to
-                elif direction_to_be_set == 'e':
-                    room.connectRooms(grid[to_the_east], direction_to_be_set)
-                    grid[to_the_east].connectRooms(room, opposites[direction_to_be_set])
-                # s_to
+                    random_index = random.randrange(0, len(directions["first_row"]))
+                    direction_to_be_set = directions["first_row"][random_index]
+                    # w_to
+                    if direction_to_be_set == 'w':
+                        room.connectRooms(grid[to_the_west], direction_to_be_set)
+                        grid[to_the_west].connectRooms(room, opposites[direction_to_be_set])
+                    # e_to
+                    elif direction_to_be_set == 'e':
+                        room.connectRooms(grid[to_the_east], direction_to_be_set)
+                        grid[to_the_east].connectRooms(room, opposites[direction_to_be_set])
+                    # s_to
+                    else:
+                        room.connectRooms(grid[to_the_south], direction_to_be_set)
+                        grid[to_the_south].connectRooms(room, opposites[direction_to_be_set])
+            # if last row
+            elif room.y == 0:
+                if room.x == 0: # first row last column
+                    random_index = random.randrange(0, len(directions["last_row_and_first_column"]))
+                    direction_to_be_set = directions["last_row_and_first_column"][random_index]
+                    # e_to
+                    if direction_to_be_set == 'e':
+                        room.connectRooms(grid[to_the_east], direction_to_be_set)
+                        grid[to_the_east].connectRooms(room, opposites[direction_to_be_set])
+                    # n_to
+                    else:
+                        room.connectRooms(grid[to_the_north], direction_to_be_set)
+                        grid[to_the_north].connectRooms(room, opposites[direction_to_be_set])
+
+                elif room.x == 5:
+                    random_index = random.randrange(0, len(directions["last_row_and_last_column"]))
+                    direction_to_be_set = directions["last_row_and_last_column"][random_index]
+                    # w_to
+                    if direction_to_be_set == 'w':
+                        room.connectRooms(grid[to_the_west], direction_to_be_set)
+                        grid[to_the_west].connectRooms(room, opposites[direction_to_be_set])
+                    # n_to
+                    else:
+                        room.connectRooms(grid[to_the_north], direction_to_be_set)
+                        grid[to_the_north].connectRooms(room, opposites[direction_to_be_set])
+                   
                 else:
-                    room.connectRooms(grid[to_the_south], direction_to_be_set)
-                    grid[to_the_south].connectRooms(room, opposites[direction_to_be_set])
+                    random_index = random.randrange(0, len(directions["last_row"]))
+                    direction_to_be_set = directions["last_row"][random_index]
+                    # w_to
+                    if direction_to_be_set == 'w':
+                        room.connectRooms(grid[to_the_west], direction_to_be_set)
+                        grid[to_the_west].connectRooms(room, opposites[direction_to_be_set])
+                    # e_to
+                    elif direction_to_be_set == 'e':
+                        room.connectRooms(grid[to_the_east], direction_to_be_set)
+                        grid[to_the_east].connectRooms(room, opposites[direction_to_be_set])
+                    # n_to
+                    else:
+                        room.connectRooms(grid[to_the_north], direction_to_be_set)
+                        grid[to_the_north].connectRooms(room, opposites[direction_to_be_set])
             
             array_rooms.append(room)
         
