@@ -4,6 +4,7 @@ from .models import Room, Player
 class RoomSerializer(serializers.ModelSerializer):
     class Meta:
         model = Room
+        ordering = ['id']
         fields = ['id', 'title', 'description', 'n_to', 's_to', 'e_to', 'w_to', 'x', 'y']
 
 class PlayerSerializer(serializers.ModelSerializer):
