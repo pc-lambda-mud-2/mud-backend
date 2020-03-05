@@ -160,14 +160,14 @@ class World(models.Model):
         for index, room in enumerate(grid):
             to_the_north = index - self.width
             to_the_east = index + 1
-            to_the_south = index + self.width
+            to_the_south = index + 5
             to_the_west = index - 1
 
             print(room.title, room.x, room.y, "<<<<<<")
 
 
             # if first row,
-            if room.y == 5:
+            if room.y == self.height - 1:
                 if room.x == 0: # first row first column
                     random_index = random.randrange(0, len(directions["first_row_and_first_column"]))
                     direction_to_be_set = directions["first_row_and_first_column"][random_index]
@@ -180,7 +180,7 @@ class World(models.Model):
                         room.connectRooms(grid[to_the_south], direction_to_be_set)
                         grid[to_the_south].connectRooms(room, opposites[direction_to_be_set])
 
-                elif room.x == 5:
+                elif room.x == self.width - 1:
                     random_index = random.randrange(0, len(directions["first_row_and_last_column"]))
                     direction_to_be_set = directions["first_row_and_last_column"][random_index]
                     # w_to
@@ -220,7 +220,7 @@ class World(models.Model):
                         room.connectRooms(grid[to_the_north], direction_to_be_set)
                         grid[to_the_north].connectRooms(room, opposites[direction_to_be_set])
 
-                elif room.x == 5:
+                elif room.x == self.width - 1:
                     random_index = random.randrange(0, len(directions["last_row_and_last_column"]))
                     direction_to_be_set = directions["last_row_and_last_column"][random_index]
                     # w_to
@@ -266,7 +266,7 @@ class World(models.Model):
                         room.connectRooms(grid[to_the_north], direction_to_be_set)
                         grid[to_the_north].connectRooms(room, opposites[direction_to_be_set])
 
-                elif room.x == 5:
+                elif room.x == self.width - 1:
                     random_index = random.randrange(0, len(directions["last_column"]))
                     direction_to_be_set = directions["last_column"][random_index]
                     # w_to
