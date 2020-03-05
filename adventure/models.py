@@ -13,6 +13,8 @@ class Room(models.Model):
     s_to = models.IntegerField(default=0)
     e_to = models.IntegerField(default=0)
     w_to = models.IntegerField(default=0)
+    x = models.IntegerField(default=0)
+    y = models.IntegerField(default=0)
 
     def __str__(self):
         return f'Title: {self.title}'
@@ -99,6 +101,10 @@ class World(models.Model):
 
     # method to read the rooms csv file and save to a List which we will iterate to save to the database
     def roomreader(self, rooms=[]):
+        x = 0
+        x_max = 20
+        y = 19
+        # y_max = 20
         # open the file
         with open('rooms.csv', newline='') as csvfile:
             # we read it
@@ -112,7 +118,11 @@ class World(models.Model):
                     line_count += 1
                 else:
                     # we create a Room with the info of each row
-                    rooms.append(Room(title=row[0], description=row[1]))
+                    rooms.append(Room(title=row[0], description=row[1], x=x, y=y))
+                    x += 1
+                    if x == x_max:
+                        x = 0
+                        y -= 1
         return rooms
 
 
