@@ -21,15 +21,15 @@ directions = ['n', 's', 'e', 'w']
 #   p.save()
 
 rooms_in_db = Room.objects.all()
-print(rooms_in_db[0].id, '<<<<<<<<<<<<< Room ID?')
-rooms_BST = BinarySearchTree(rooms_in_db[0].id)
+rooms_BST = BinarySearchTree(rooms_in_db[0])
 
 # room_BST = DoublyLinkedList
 for room in rooms_in_db:
-  rooms_BST.insert(room.id)
+  rooms_BST.insert(room)
 
-print(rooms_BST.get_max())
 print(rooms_BST.right)
+# print(rooms_BST.right)
+# print(rooms_BST.right)
 
 # FIRST CODE
 

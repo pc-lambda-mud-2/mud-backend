@@ -15,7 +15,6 @@ class BinarySearchTree:
 
     # Insert the given value into the tree
     def insert(self, value):
-        print(self.value + '<<<<<<<<<<<<<<<<<<<<from insert')
         # print(value)
         # LEFT CASE
         # check if our new node's value is less than the current node's value
