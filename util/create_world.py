@@ -4,12 +4,21 @@ import random
 
 Room.objects.all().delete()
 
-w = World()
+w = World(width=5, height=5)
 
 w.writerooms()
 room_array = w.roomreader()
+# all_rooms = Room.objects.all()
 for el in room_array:
   el.save()
+
+room_array_2 = Room.objects.all()
+w.connect_rooms(room_array_2)
+
+# new_grid = w.connect_rooms(room_array_2)
+# for el in new_grid:
+#   el.save()
+
 
 players=Player.objects.all()
 for p in players:

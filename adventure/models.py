@@ -5,8 +5,10 @@ from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 import uuid
 import csv
+import random
 
 class Room(models.Model):
+    id = models.IntegerField(primary_key=True)
     title = models.CharField(max_length=50, default="DEFAULT TITLE")
     description = models.CharField(max_length=500, default="DEFAULT DESCRIPTION")
     n_to = models.IntegerField(default=0)
@@ -16,13 +18,15 @@ class Room(models.Model):
     x = models.IntegerField(default=0)
     y = models.IntegerField(default=0)
 
-    def __str__(self):
-        return f'Title: {self.title}'
+    # def __str__(self):
+    #     return f'Title: {self.title}'
 
     def connectRooms(self, destinationRoom, direction):
         destinationRoomID = destinationRoom.id
+        print(destinationRoomID, direction, "<<< in connectrooms method, next room id")
         try:
             destinationRoom = Room.objects.get(id=destinationRoomID)
+            print(destinationRoom, "<<<<< inside the try")
         except Room.DoesNotExist:
             print("That room does not exist")
         else:
@@ -71,8 +75,8 @@ def save_user_player(sender, instance, **kwargs):
 
 class World(models.Model):
     grid = None
-    width = 0
-    height = 0
+    width = models.IntegerField(default=0)
+    height = models.IntegerField(default=0)
 
     # method to generate rooms
     def writerooms(self, rooms=[]):
@@ -81,9 +85,9 @@ class World(models.Model):
             # we read teh file separating each line
             adjectives = f.read().splitlines()
             # we loop through the lines
-            for line in adjectives:
+            for line in range((self.width * self.height) + 1):
                 # we append each line to rooms List adding 'room
-                rooms.append(f'{line} room')
+                rooms.append(f'{adjectives[line]} room')
         
         # we open the room file, that will be used as a table to save info to database
         with open('rooms.csv', 'w', newline='') as csvfile:
@@ -102,9 +106,9 @@ class World(models.Model):
     # method to read the rooms csv file and save to a List which we will iterate to save to the database
     def roomreader(self, rooms=[]):
         x = 0
-        x_max = 20
-        y = 19
-        # y_max = 20
+        x_max = self.width + 1
+        y = self.height
+        room_id = 0
         # open the file
         with open('rooms.csv', newline='') as csvfile:
             # we read it
@@ -118,11 +122,113 @@ class World(models.Model):
                     line_count += 1
                 else:
                     # we create a Room with the info of each row
-                    rooms.append(Room(title=row[0], description=row[1], x=x, y=y))
+                    rooms.append(Room(id=room_id, title=row[0], description=row[1], x=x, y=y))
+                    room_id += 1
                     x += 1
                     if x == x_max:
                         x = 0
                         y -= 1
         return rooms
+
+    def connect_rooms(self, grid):
+        # array where we store the rooms
+        array_rooms = []
+        # we set the available directions for each case scenario
+
+        # first rom - direction cannot be north
+        directions = {
+            "usual": ['n', 'e', 's', 'w'],
+            "first_row_and_first_column": ['e', 's'],
+            "first_row": ['e', 's', 'w'],
+            "first_row_and_last_column": ['s', 'w'],
+            "first_column": ['n', 'e', 's'],
+            "last_column": ['n', 's', 'w'],
+            "last_row_and_first_column": ['n', 'e'],
+            "last_row": ['n', 'e', 'w'],
+            "last_row_and_last_column": ['n', 'w'],            
+        }
+
+
+        # we iterate over rows
+        for index, room in enumerate(grid):
+            to_the_north = index - 5
+            to_the_east = index + 1
+            to_the_south = index + 5
+            to_the_west = index - 1
+
+            print(room.title, room.x, room.y, "<<<<<<")
+
+
+        # if first row,
+            if room.y == 5 and room.x == 0: # first row first column
+                random_index = random.randrange(0, len(directions["first_row_and_first_column"]))
+                direction_to_be_set = directions["first_row_and_first_column"][random_index]
+                # e_to
+                # print(direction_to_be_set, "<<<< direction")
+                print(direction_to_be_set, "<<<<<< direction")
+                print(grid[to_the_east].id, "<<<<<< east room")
+                print(grid[to_the_south].id, "<<<<<< south room")
+                if direction_to_be_set == 'e':
+                    room.connectRooms(grid[to_the_east], direction_to_be_set)
+                # s_to
+                else:
+                    room.connectRooms(grid[to_the_south], direction_to_be_set)
+
+            elif room.y == 5 and room.x == 5:
+                random_index = random.randrange(0, len(directions["first_row_and_last_column"]))
+                direction_to_be_set = directions["first_row_and_last_column"][random_index]
+                # w_to
+                if direction_to_be_set == 'w':
+                    room.connectRooms(grid[to_the_west], direction_to_be_set)
+                # s_to
+                else:
+                    room.connectRooms(grid[to_the_south], direction_to_be_set)
+            elif room.y == 5:
+                random_index = random.randrange(0, len(directions["first_row"]))
+                direction_to_be_set = directions["first_row"][random_index]
+                # w_to
+                if direction_to_be_set == 'w':
+                    room.connectRooms(grid[to_the_west], direction_to_be_set)
+                # e_to
+                if direction_to_be_set == 'e':
+                    room.connectRooms(grid[to_the_east], direction_to_be_set)
+                # s_to
+                else:
+                    room.connectRooms(grid[to_the_south], direction_to_be_set)
+            
+            array_rooms.append(room)
+        
+        return grid
+                
+
+            # if first column
+
+                # set available directions
+
+            # if last column
+
+                # set available directions
+
+            # else
+
+                # set available directions
+
+        # if last row,
+
+            # if first column
+
+                # set available directions
+
+            # if last column
+
+                # set available directions
+
+            # else
+
+                # set available directions
+
+        # else
+
+            # set available directions
 
 
