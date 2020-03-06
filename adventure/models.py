@@ -282,7 +282,6 @@ class World(models.Model):
                         room.connectRooms(grid[to_the_north], direction_to_be_set)
                         grid[to_the_north].connectRooms(room, opposites[direction_to_be_set])
                    
-##
                 else:
                     random_index = random.randrange(0, len(directions["usual"]))
                     direction_to_be_set = directions["usual"][random_index]
@@ -302,7 +301,27 @@ class World(models.Model):
                     else:
                         room.connectRooms(grid[to_the_north], direction_to_be_set)
                         grid[to_the_north].connectRooms(room, opposites[direction_to_be_set])
-
+                    
+##
+                    random_index = random.randrange(0, len(directions["usual"]))
+                    direction_to_be_set = directions["usual"][random_index]
+                    # w_to
+                    if direction_to_be_set == 'w':
+                        room.connectRooms(grid[to_the_west], direction_to_be_set)
+                        grid[to_the_west].connectRooms(room, opposites[direction_to_be_set])
+                    # e_to
+                    elif direction_to_be_set == 'e':
+                        room.connectRooms(grid[to_the_east], direction_to_be_set)
+                        grid[to_the_east].connectRooms(room, opposites[direction_to_be_set])
+                    # s_to
+                    elif direction_to_be_set == 's':
+                        room.connectRooms(grid[to_the_south], direction_to_be_set)
+                        grid[to_the_south].connectRooms(room, opposites[direction_to_be_set])
+                    # n_to
+                    else:
+                        room.connectRooms(grid[to_the_north], direction_to_be_set)
+                        grid[to_the_north].connectRooms(room, opposites[direction_to_be_set])
+                        
             array_rooms.append(room)
         
         return grid
